@@ -1,0 +1,14 @@
+export class PetClient {
+    constructor(private request) {}
+
+    async createPet(pet){
+        return this.request.post('/v2/pet/', {data:pet});
+    }
+    async updatePet(pet) {
+        return this.request.put('/v2/pet/', {data:pet});
+    }
+    async getPetByStatus(id) {
+        return this.request.get('/v2/pet/findByStatus?status=${id}');
+    }
+
+}

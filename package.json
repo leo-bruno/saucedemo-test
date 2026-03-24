@@ -1,0 +1,25 @@
+{
+  "name": "saucedemo-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:desktop": "playwright test -c playwright-desktop.config.js",
+    "test:mobile": "playwright test  -c playwright-mobile.config.js",
+    "test:desktop:smoke": "playwright test -c playwright-desktop.config.js --grep @smoke",
+    "test:mobile:smoke": "playwright test  -c playwright-mobile.config.js --grep @smoke",
+    "test:desktop:regression": "playwright test -c playwright-desktop.config.js --grep @regression",
+    "test:mobile:regression": "playwright test  -c playwright-mobile.config.js --grep @regression",
+    "test:desktop:ui": "playwright test -c playwright-desktop.config.js --ui",
+    "test:mobile:ui": "playwright test  -c playwright-mobile.config.js --ui",
+    "test:api": "playwright test  -c playwright-api.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0"
+  }
+}
