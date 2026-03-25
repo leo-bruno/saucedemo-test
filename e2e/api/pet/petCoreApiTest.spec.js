@@ -1,33 +1,24 @@
 import {test, expect,} from '@playwright/test';
-import {PetClient} from '../../../api/petClient'
+import {PetClient} from '../../../api/PetClient'
 
 test.describe("Pet API - Core tests", () => {
+    let response, responseBody;
+    let client;
+    let body;
+
+    test.beforeEach("Create client", async ({request}) => {
+        client = new PetClient(request)
+    })
+
     test("POST: Should create a pet", async({request}) => {
-        const client = new PetClient(request)
+        body= {"id": 123,"status": "available" }
 
-        const body =
-        {
-            "id": 0,
-            "category": {
-                "id": 0,
-                "name": "string"
-            },
-            "name": "doggie",
-            "photoUrls": [
-                "string"
-            ],
-            "tags": [
-                {
-                    "id": 0,
-                    "name": "string"
-                }
-            ],
-            "status": "available"
-        }
+        response = await client.createPet(body)
+        responseBody = await response.json();
 
-        const res = await client.createPet(body)
-        expect(res.status()).toBe(200)
-
+        expect(response.status()).toBe(200)
+        expect(responseBody.id).toEqual(body.id)
+        expect(responseBody.status).toContain(body.status)
     })
 
     test("GET: Should return pet using status", async({request}) => {
