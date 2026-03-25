@@ -1,44 +1,47 @@
 import {test, expect,} from '@playwright/test';
-import {StoreClient} from '../../../api/storeClient'
+import {StoreClient} from '../../../api/StoreClient'
 
 test.describe("Store API - Core tests", () => {
+    let response, responseBody;
+    let storeClient;
+    let body;
+    
+    test.beforeEach("Create store", async({request}) => {
+        storeClient = new StoreClient(request);
+    })
+
     test("POST: Create store", async ({request}) => {
-        const storeClient = new StoreClient(request);
+        body = {"id": 1,"complete": true}
 
-        const body =
-        {
-            "id": 1,
-            "petId": 0,
-            "quantity": 0,
-            "shipDate": "2026-03-24T15:49:02.143Z",
-            "status": "placed",
-            "complete": true
-        }
+        response = await storeClient.createStore(body)
+        responseBody = await response.json();
 
-        const resp = await storeClient.createStore(body)
-        expect(resp.status()).toBe(200);
-
+        expect(response.status()).toBe(200);
+        expect(responseBody.id).toBe(body.id)
+        expect(responseBody.complete).toBeTruthy()
     })
 
     test("GET: Should return store inventory", async ({request}) => {
-        const storeClient = new StoreClient(request);
-        const  resp = await storeClient.getStoreInventory();
-        expect(resp.status()).toBe(200);
+        storeClient = new StoreClient(request);
+        response = await storeClient.getStoreInventory();
+        responseBody = await response.json();
+
+        expect(response.status()).toBe(200);
+        for (const [status, count] of Object.entries(responseBody)) {
+            expect(count).toBeGreaterThan(-1)
+            expect(typeof status).toBe("string")
+        }
     })
 
     test ("DELETE: Should delete a store", async ({request}) => {
-        const storeClient = new StoreClient(request);
-        let body;
-        await storeClient.createStore(body =
-            {
-                "id": 1,
-                "petId": 0,
-                "quantity": 0,
-                "shipDate": "2026-03-24T15:49:02.143Z",
-                "status": "placed",
-                "complete": true
-            })
-        const resp = await storeClient.deleteStore(1);
-        expect(resp.status()).toBe(200)
+        body = {"id": 1}
+
+        await storeClient.createStore(body)
+        response = await storeClient.deleteStore(body.id);
+        responseBody = await response.json();
+
+        expect(response.status()).toBe(200)
+        expect(responseBody.code).toBe(200)
+        expect(responseBody.message).toBe(body.id.toString())
     })
 })
