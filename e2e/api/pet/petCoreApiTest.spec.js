@@ -22,9 +22,14 @@ test.describe("Pet API - Core tests", () => {
     })
 
     test("GET: Should return pet using status", async({request}) => {
-        const client = new PetClient(request)
-        const res = await client.getPetByStatus("available");
-        expect(res.status()).toBe(200)
+        const expectedStatus = "available";
+        response = await client.getPetByStatus(expectedStatus);
+        responseBody = await response.json();
+
+        expect(response.status()).toBe(200)
+        for(const pet of responseBody){
+            expect(pet.status).toContain(expectedStatus)
+        }
     })
 
     test("PUT: Should update pet", async ({request}) => {

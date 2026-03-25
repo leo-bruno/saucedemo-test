@@ -7,8 +7,8 @@ export class PetClient {
     async updatePet(pet) {
         return this.request.put('/v2/pet/', {data:pet});
     }
-    async getPetByStatus(id) {
-        return this.request.get('/v2/pet/findByStatus?status=${id}');
+    async getPetByStatus(status) {
+        return await this.request.get(`/v2/pet/findByStatus?status=${status}`);
     }
 
 }
