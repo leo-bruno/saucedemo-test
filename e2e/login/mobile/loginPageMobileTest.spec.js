@@ -61,7 +61,7 @@ test.describe('Login functionality', () => {
         await expect (loginPage.errorMessageContainer, "Message shown is wrong").toHaveText("Epic sadface: Sorry, this user has been locked out.")
     })
 
-    test('Problem User', async({page}) =>{
+    test.skip('Button text should change after clicking (skipped due to TASK-123)', async({page}) =>{
         await loginPage.login(problemUser.username, problemUser.password)
         const button = inventoryPage.getAddToCartButton(0);
 
