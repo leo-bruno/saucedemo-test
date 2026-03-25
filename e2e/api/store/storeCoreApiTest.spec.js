@@ -28,8 +28,8 @@ test.describe("Store API - Core tests", () => {
 
         expect(response.status(), "Status code is not 200").toBe(200);
         for (const [status, count] of Object.entries(responseBody)) {
-            expect(count, "Error: Inventory amount can not be less than zero").toBeGreaterThan(-1)
-            expect(typeof status, "Error: Status code can not be something different to a string").toBe("string")
+            expect(count, "Inventory amount can not be less than zero").toBeGreaterThan(-1)
+            expect(typeof status, "Status code can not be something different to a string").toBe("string")
         }
     })
 
@@ -42,6 +42,6 @@ test.describe("Store API - Core tests", () => {
 
         expect(response.status(), "Status code is not 200").toBe(200)
         expect(responseBody.code).toBe(200)
-        expect(responseBody.message, "Error: Message different to the store id deleted").toBe(body.id.toString())
+        expect(responseBody.message, "Message different to the store id deleted").toBe(body.id.toString())
     })
 })

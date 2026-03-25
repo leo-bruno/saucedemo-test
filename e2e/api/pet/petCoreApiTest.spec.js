@@ -16,9 +16,9 @@ test.describe("Pet API - Core tests", () => {
         response = await client.createPet(body)
         responseBody = await response.json();
 
-        expect(response.status()).toBe(200)
-        expect(responseBody.id).toEqual(body.id)
-        expect(responseBody.status).toContain(body.status)
+        expect(response.status(), "Status code is not 200").toBe(200)
+        expect(responseBody.id, "Pet id is not the expected one").toEqual(body.id)
+        expect(responseBody.status, "Pet status is not the expected one").toContain(body.status)
     })
 
     test("GET: Should return pet using status", async({request}) => {
@@ -26,9 +26,9 @@ test.describe("Pet API - Core tests", () => {
         response = await client.getPetByStatus(expectedStatus);
         responseBody = await response.json();
 
-        expect(response.status()).toBe(200)
+        expect(response.status(), "Status code is not 200").toBe(200)
         for(const pet of responseBody){
-            expect(pet.status).toContain(expectedStatus)
+            expect(pet.status, "Pet status is not the expected one").toContain(expectedStatus)
         }
     })
 
@@ -40,7 +40,7 @@ test.describe("Pet API - Core tests", () => {
         response = await client.updatePet(expectedBody)
         responseBody = await response.json();
 
-        expect(response.status()).toBe(200)
-        expect(responseBody.status).toContain(expectedBody.status)
+        expect(response.status(), "Status code is not 200").toBe(200)
+        expect(responseBody.status, "Pet status is not the expected one").toContain(expectedBody.status)
     })
 })
