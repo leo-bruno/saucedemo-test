@@ -27,34 +27,34 @@ test.describe("Shopping Cart functionality", () => {
         await inventoryPage.clickOnAddButton(0);
         const expectedItem = await inventoryPage.getItemTitle(0);
 
-        await expect(commonPage.getCartBadge()).toHaveText("1");
+        await expect(commonPage.getCartBadge(),"Wrong amount in the cart budge").toHaveText("1");
 
         await commonPage.clickOnShoppingCartLink();
 
-        await expect(cartPage.getItemTitle(0)).toHaveText(expectedItem);
-        await expect(commonPage.getCartBadge()).toBeVisible();
-        await expect(commonPage.getCartBadge()).toHaveText("1");
+        await expect(cartPage.getItemTitle(0), "Wrong item added to the shopping cart page").toHaveText(expectedItem);
+        await expect(commonPage.getCartBadge(), "Cart badge is not shown").toBeVisible();
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("1");
     })
 
-    test("@regression Remove item in the shopping cart from inventory page", async ({page}) => {
+    test("Remove item in the shopping cart from inventory page", async ({page}) => {
         await inventoryPage.clickOnAddButton(0);
         const expectedFirstItem = await inventoryPage.getItemTitle(0);
 
         await inventoryPage.clickOnAddButton(1);
         const expectedSecondItem = await inventoryPage.getItemTitle(1);
 
-        await expect(commonPage.getCartBadge()).toHaveText("2");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("2");
 
         await inventoryPage.clickOnAddButton(0);
 
-        await expect(commonPage.getCartBadge()).toHaveText("1");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("1");
 
         await commonPage.clickOnShoppingCartLink();
 
-        await expect(cartPage.getItemTitle(0)).not.toHaveText(expectedFirstItem);
-        await expect(cartPage.getItemTitle(0)).toHaveText(expectedSecondItem);
-        await expect(commonPage.getCartBadge()).toBeVisible();
-        await expect(commonPage.getCartBadge()).toHaveText("1");
+        await expect(cartPage.getItemTitle(0), "The item was not removed as expected").not.toHaveText(expectedFirstItem);
+        await expect(cartPage.getItemTitle(0), "The item was removed and was not expected").toHaveText(expectedSecondItem);
+        await expect(commonPage.getCartBadge(), "Cart badge is not shown").toBeVisible();
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("1");
 
     })
 
@@ -63,13 +63,13 @@ test.describe("Shopping Cart functionality", () => {
 
         await inventoryPage.clickOnAddButton(1);
 
-        await expect(commonPage.getCartBadge()).toHaveText("2");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("2");
 
         await commonPage.clickOnShoppingCartLink();
 
         await cartPage.clickOnAddButton(0);
 
-        await expect(commonPage.getCartBadge()).toHaveText("1");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("1");
 
     })
 
@@ -81,7 +81,7 @@ test.describe("Shopping Cart functionality", () => {
 
         await loginPage.login(standardUser.username, standardUser.password);
 
-        await expect(commonPage.getCartBadge()).toHaveText("2");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("2");
     })
 
     test("@regression Items remain after refresh page", async ({page}) => {
@@ -90,6 +90,6 @@ test.describe("Shopping Cart functionality", () => {
 
         await page.reload();
 
-        await expect(commonPage.getCartBadge()).toHaveText("2");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("2");
     })
 })
