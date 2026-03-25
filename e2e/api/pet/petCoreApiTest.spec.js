@@ -33,29 +33,14 @@ test.describe("Pet API - Core tests", () => {
     })
 
     test("PUT: Should update pet", async ({request}) => {
-        const client = new PetClient(request)
+        body= {"id": 123,"status": "available" }
+        await client.createPet(body)
 
-        const body =
-            {
-                "id": 0,
-                "category": {
-                    "id": 0,
-                    "name": "string"
-                },
-                "name": "doggie",
-                "photoUrls": [
-                    "string"
-                ],
-                "tags": [
-                    {
-                        "id": 0,
-                        "name": "string"
-                    }
-                ],
-                "status": "available"
-            }
+        const expectedBody= {"id": 123, "status": "offline"}
+        response = await client.updatePet(expectedBody)
+        responseBody = await response.json();
 
-        const res = await client.updatePet(body)
-        expect(res.status()).toBe(200)
+        expect(response.status()).toBe(200)
+        expect(responseBody.status).toContain(expectedBody.status)
     })
 })
