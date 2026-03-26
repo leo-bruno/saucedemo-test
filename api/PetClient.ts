@@ -5,10 +5,6 @@ export class PetClient {
         return await this.request.post('/v2/pet/', {data:pet});
     }
 
-    async updatePet(pet) {
-        return await this.request.put('/v2/pet/', {data:pet});
-    }
-
     async getPetByStatus(status) {
         return await this.request.get(`/v2/pet/findByStatus?status=${status}`);
     }
