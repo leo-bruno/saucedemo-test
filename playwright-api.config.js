@@ -28,7 +28,8 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-      baseURL: 'https://petstore.swagger.io/v2',
+      /* Base URL to use in actions and make it work in CI/CD. */
+      baseURL: process.env.BASE_URL || 'https://petstore.swagger.io/v2',
       extraHTTPHeaders: {
           // We set this header per GitHub guidelines.
           'Accept': 'application/json',
