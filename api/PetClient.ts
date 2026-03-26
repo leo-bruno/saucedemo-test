@@ -12,4 +12,8 @@ export class PetClient {
     async getPetByStatus(status) {
         return await this.request.get(`/v2/pet/findByStatus?status=${status}`);
     }
+
+    async getPetById(petId) {
+        return await this.request.get(`/v2/pet/${petId}`);
+    }
 }

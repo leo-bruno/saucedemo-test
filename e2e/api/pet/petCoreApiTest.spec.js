@@ -1,17 +1,18 @@
 import {test, expect,} from '@playwright/test';
 import {PetClient} from '../../../api/PetClient'
 
-test.describe("Pet API - Core tests", () => {
-    let response, responseBody;
-    let client;
-    let body;
+let response, responseBody;
+let client;
+let body;
+
+test.describe("Pet API - POST tests", () => {
 
     test.beforeEach("Create client", async ({request}) => {
         client = new PetClient(request)
     })
 
-    test("POST: Should create a pet", async({request}) => {
-        body= {"id": 123,"status": "available" }
+    test("Should create a pet", async ({request}) => {
+        body = {"id": 123, "status": "available"}
 
         response = await client.createPet(body)
         responseBody = await response.json();
@@ -21,7 +22,22 @@ test.describe("Pet API - Core tests", () => {
         expect(responseBody.status, "Pet status is not the expected one").toContain(body.status)
     })
 
-    test("GET: Should return pet using status", async({request}) => {
+    test("Should not create a pet", async ({request}) => {
+        body = {"id": "test", "status": "available"}
+
+        response = await client.createPet(body)
+
+        expect(response.status(), "The pet was created when it should not be").not.toBe(200)
+    })
+});
+
+test.describe("Pet API - GET tests", () => {
+
+    test.beforeEach("Create client", async ({request}) => {
+        client = new PetClient(request)
+    })
+
+    test("Should return pet using status", async({request}) => {
         const expectedStatus = "available";
         response = await client.getPetByStatus(expectedStatus);
         responseBody = await response.json();
@@ -32,15 +48,15 @@ test.describe("Pet API - Core tests", () => {
         }
     })
 
-    test("PUT: Should update pet", async ({request}) => {
-        body= {"id": 123,"status": "available" }
+    test("Should return pet using id", async ({request}) => {
+        body= {"id": 123, "status": "available" }
         await client.createPet(body)
 
-        const expectedBody= {"id": 123, "status": "offline"}
-        response = await client.updatePet(expectedBody)
+        response = await client.getPetById(body.id)
         responseBody = await response.json();
 
         expect(response.status(), "Status code is not 200").toBe(200)
-        expect(responseBody.status, "Pet status is not the expected one").toContain(expectedBody.status)
+        expect(responseBody.status, "Pet status is not the expected one").toBe(body.status)
+        expect(responseBody.id, "Pet id is not the expected one").toBe(body.id)
     })
 })
