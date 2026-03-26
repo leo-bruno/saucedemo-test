@@ -7,11 +7,11 @@ let body;
 
 test.describe("Pet API - POST tests", () => {
 
-    test.beforeEach("Create client", async ({request}) => {
+    test.beforeEach("Create pet client", async ({request}) => {
         client = new PetClient(request)
     })
 
-    test("Should create a pet", async ({request}) => {
+    test("@smoke Should create a pet", async ({request}) => {
         body = {"id": 123, "status": "available"}
 
         response = await client.createPet(body)
@@ -22,7 +22,7 @@ test.describe("Pet API - POST tests", () => {
         expect(responseBody.status, "Pet status is not the expected one").toContain(body.status)
     })
 
-    test("Should not create a pet", async ({request}) => {
+    test("@regression Should not create a pet", async ({request}) => {
         body = {"id": "test", "status": "available"}
 
         response = await client.createPet(body)
@@ -33,11 +33,11 @@ test.describe("Pet API - POST tests", () => {
 
 test.describe("Pet API - GET tests", () => {
 
-    test.beforeEach("Create client", async ({request}) => {
+    test.beforeEach("Create pet client", async ({request}) => {
         client = new PetClient(request)
     })
 
-    test("Should return pet using status", async({request}) => {
+    test("@regression Should return pet using status", async({request}) => {
         const expectedStatus = "available";
         response = await client.getPetByStatus(expectedStatus);
         responseBody = await response.json();
@@ -48,7 +48,7 @@ test.describe("Pet API - GET tests", () => {
         }
     })
 
-    test("Should return pet using id", async ({request}) => {
+    test("@regression Should return pet using id", async ({request}) => {
         body= {"id": 123, "status": "available" }
         await client.createPet(body)
 

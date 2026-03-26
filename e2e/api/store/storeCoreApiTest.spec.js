@@ -7,11 +7,11 @@ let body;
 
 test.describe("Store API - POST tests",  () => {
 
-    test.beforeEach("Create store", async ({request}) => {
+    test.beforeEach("Create store client", async ({request}) => {
         storeClient = new StoreClient(request);
     })
 
-    test("Create store", async ({request}) => {
+    test("@smoke Create store", async ({request}) => {
         body = {"id": 1, "complete": true}
 
         response = await storeClient.createStore(body)
@@ -22,7 +22,7 @@ test.describe("Store API - POST tests",  () => {
         expect(responseBody.complete, "Store complete is not true").toBeTruthy()
     })
 
-    test("Store should not be created", async ({request}) => {
+    test("@regression Store should not be created", async ({request}) => {
         body = {"id": 1, "complete": "test"}
         response = await storeClient.createStore(body)
         responseBody = await response.json();
@@ -32,11 +32,11 @@ test.describe("Store API - POST tests",  () => {
 
 test.describe("Store API - DELETE tests", () => {
 
-    test.beforeEach("Create store", async ({request}) => {
+    test.beforeEach("Create store client", async ({request}) => {
         storeClient = new StoreClient(request);
     })
 
-    test("Should delete a store", async ({request}) => {
+    test("@smoke Should delete a store", async ({request}) => {
         body = {"id": 1}
 
         await storeClient.createStore(body)
@@ -48,7 +48,7 @@ test.describe("Store API - DELETE tests", () => {
         expect(responseBody.message, "Message different to the expected").toBe(body.id.toString())
     })
 
-    test("Should not delete a store twice", async({request}) => {
+    test("@regression Should not delete a store twice", async({request}) => {
         body = {"id": 2}
 
         await storeClient.createStore(body)
