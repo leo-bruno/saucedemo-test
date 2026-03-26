@@ -4,13 +4,15 @@ import {CommonPage} from "../../../pages/common-page";
 import {CartPage} from "../../../pages/cart-page";
 import {test, expect,} from '@playwright/test';
 
-test.describe("Shopping Cart functionality", () => {
-    let loginPage;
-    let inventoryPage;
-    let commonPage;
-    let cartPage;
+let loginPage;
+let inventoryPage;
+let commonPage;
+let cartPage;
 
-    const standardUser = { username:'standard_user',password:'secret_sauce'}
+const standardUser = {username: 'standard_user', password: 'secret_sauce'}
+
+test.describe("Shopping Cart test", () => {
+
 
     test.beforeEach(async ({page}) => {
         loginPage = new LoginPage(page);
@@ -27,7 +29,7 @@ test.describe("Shopping Cart functionality", () => {
         await inventoryPage.clickOnAddButton(0);
         const expectedItem = await inventoryPage.getItemTitle(0);
 
-        await expect(commonPage.getCartBadge(),"Wrong amount in the cart budge").toHaveText("1");
+        await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("1");
 
         await commonPage.clickOnShoppingCartLink();
 
@@ -71,6 +73,18 @@ test.describe("Shopping Cart functionality", () => {
 
         await expect(commonPage.getCartBadge(), "Wrong amount in the cart budge").toHaveText("1");
 
+    })
+})
+
+test.describe("Persistence tests", () => {
+
+    test.beforeEach(async ({page}) => {
+        loginPage = new LoginPage(page);
+        inventoryPage = new InventoryPage(page);
+        commonPage = new CommonPage(page);
+
+        await loginPage.goto();
+        await loginPage.login(standardUser.username, standardUser.password);
     })
 
     test("@regression Items remain after log out", async ({page}) => {
