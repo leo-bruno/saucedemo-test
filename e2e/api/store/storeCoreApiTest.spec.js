@@ -45,7 +45,7 @@ test.describe("Store API - DELETE tests", () => {
 
         expect(response.status(), "Status code is not 200").toBe(200)
         expect(responseBody.code).toBe(200)
-        expect(responseBody.message, "Message different to the store id deleted").toBe(body.id.toString())
+        expect(responseBody.message, "Message different to the expected").toBe(body.id.toString())
     })
 
     test("Should not delete a store twice", async({request}) => {
