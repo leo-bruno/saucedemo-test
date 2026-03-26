@@ -1,5 +1,5 @@
 import {test, expect,} from '@playwright/test';
-import {StoreClient} from '../../../api/StoreClient'
+import {StoreClient} from '../../../api-clients/StoreClient'
 
 let response, responseBody;
 let storeClient;

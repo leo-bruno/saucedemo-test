@@ -1,7 +1,7 @@
 import {test, expect,} from '@playwright/test';
-import {LoginPage} from "../../../pages/login-page";
-import {InventoryPage} from "../../../pages/inventory-page";
-import {CommonPage} from "../../../pages/common-page";
+import {LoginPage} from "../../../../pages/login-page";
+import {InventoryPage} from "../../../../pages/inventory-page";
+import {CommonPage} from "../../../../pages/common-page";
 
 
 let loginPage;

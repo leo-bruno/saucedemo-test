@@ -1,5 +1,5 @@
 import {test, expect,} from '@playwright/test';
-import {PetClient} from '../../../api/PetClient'
+import {PetClient} from '../../../api-clients/PetClient'
 
 let response, responseBody;
 let client;

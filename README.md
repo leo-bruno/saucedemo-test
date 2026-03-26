@@ -40,9 +40,11 @@ For API tests, they are grouped by endpoint using `test.describe()`. One describ
 
 ### Running the tests from local
 
+## How to run API tests
 * Run API tests
   `npm run test:api`
 
+## How to run UI tests
 * Run ALL Desktop test
  `npm run test:desktop`
 
