@@ -1,17 +1,18 @@
 import {test, expect,} from '@playwright/test';
 import {StoreClient} from '../../../api/StoreClient'
 
-test.describe("Store API - Core tests", () => {
-    let response, responseBody;
-    let storeClient;
-    let body;
-    
-    test.beforeEach("Create store", async({request}) => {
+let response, responseBody;
+let storeClient;
+let body;
+
+test.describe("Store API - POST tests",  () => {
+
+    test.beforeEach("Create store", async ({request}) => {
         storeClient = new StoreClient(request);
     })
 
-    test("POST: Create store", async ({request}) => {
-        body = {"id": 1,"complete": true}
+    test("Create store", async ({request}) => {
+        body = {"id": 1, "complete": true}
 
         response = await storeClient.createStore(body)
         responseBody = await response.json();
@@ -21,19 +22,21 @@ test.describe("Store API - Core tests", () => {
         expect(responseBody.complete, "Store complete is not true").toBeTruthy()
     })
 
-    test("GET: Should return store inventory", async ({request}) => {
-        storeClient = new StoreClient(request);
-        response = await storeClient.getStoreInventory();
+    test("Store should not be created", async ({request}) => {
+        body = {"id": 1, "complete": "test"}
+        response = await storeClient.createStore(body)
         responseBody = await response.json();
 
-        expect(response.status(), "Status code is not 200").toBe(200);
-        for (const [status, count] of Object.entries(responseBody)) {
-            expect(count, "Inventory amount can not be less than zero").toBeGreaterThan(-1)
-            expect(typeof status, "Status code can not be something different to a string").toBe("string")
-        }
+        expect(response.status(), "Status code is not 200").not.toBe(200);})
+})
+
+test.describe("Store API - DELETE tests", () => {
+
+    test.beforeEach("Create store", async ({request}) => {
+        storeClient = new StoreClient(request);
     })
 
-    test ("DELETE: Should delete a store", async ({request}) => {
+    test("Should delete a store", async ({request}) => {
         body = {"id": 1}
 
         await storeClient.createStore(body)
@@ -43,5 +46,18 @@ test.describe("Store API - Core tests", () => {
         expect(response.status(), "Status code is not 200").toBe(200)
         expect(responseBody.code).toBe(200)
         expect(responseBody.message, "Message different to the store id deleted").toBe(body.id.toString())
+    })
+
+    test("Should not delete a store twice", async({request}) => {
+        body = {"id": 2}
+
+        await storeClient.createStore(body)
+        await storeClient.deleteStore(body.id);
+        response = await storeClient.deleteStore(body.id);
+        responseBody = await response.json();
+
+        expect(response.status(), "Status code is not 200").not.toBe(200)
+        expect(responseBody.code).toBe(404)
+        expect(responseBody.message, "Message different to the store id deleted").toContain("Order Not Found")
     })
 })
